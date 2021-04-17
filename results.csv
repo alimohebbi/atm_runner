@@ -1,0 +1,9 @@
+embedding,train_set,algorithm,descriptor,src,target,error,test_exist
+wm,android,craftdroid,union,NoteTaking3,NoteTaking4,False,False
+wm,android,craftdroid,union,NoteTaking4,NoteTaking2,False,False
+wm,android,craftdroid,union,NoteTaking4,NoteTaking3,,
+wm,android,craftdroid,union,ExpenseTracker1,ExpenseTracker2,False,False
+w2v,android,craftdroid,union,NoteTaking3,NoteTaking4,False,False
+w2v,android,craftdroid,union,NoteTaking4,NoteTaking2,False,False
+w2v,android,craftdroid,union,NoteTaking4,NoteTaking3,False,False
+w2v,android,craftdroid,union,ExpenseTracker1,ExpenseTracker2,False,False
