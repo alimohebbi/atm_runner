@@ -28,11 +28,11 @@ def run_atm(migration):
     my_timer = Timer(config.migration_timeout, kill, [(cp, migration)])
     my_timer.start()
     for line in cp.stdout:
+        logfile.write(line)
+        sys.stdout.write(line)
         if '(\'<\' (code 60))' in line:
             cp.kill()
             break
-        sys.stdout.write(line)
-        logfile.write(line)
     cp.wait()
     my_timer.cancel()
 
@@ -53,5 +53,5 @@ def migration_process(migration_df, i):
     prepare_for_migration(row)
     run_atm(row)
     err_exist, test_exist = post_migration(row)
-    migration_df.iloc[i]['error'] = err_exist
-    migration_df.iloc[i]['test_exist'] = str(test_exist)
+    migration_df.at[i, 'error'] = err_exist
+    migration_df.at[i, 'test_exist'] = str(test_exist)

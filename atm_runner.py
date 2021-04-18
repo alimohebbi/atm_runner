@@ -20,10 +20,10 @@ def load_migrations():
 
 def find_or_create():
     global results
-    condition = (results['embedding'] == sm_config['embedding']) & \
-                (results['train_set'] == sm_config['train_set']) & \
+    condition = (results['word_embedding'] == sm_config['word_embedding']) & \
+                (results['training_set'] == sm_config['training_set']) & \
                 (results['algorithm'] == sm_config['algorithm']) & \
-                (results['descriptor'] == sm_config['descriptor']) & \
+                (results['descriptors'] == sm_config['descriptors']) & \
                 (results['src'] == sm_config['src']) & \
                 (results['target'] == sm_config['target'])
 
@@ -33,7 +33,18 @@ def find_or_create():
     return results.index[[-1]].to_list()[0]
 
 
+def forbidden_config(semantic_config):
+    if semantic_config['word_embedding'] in ['jaccard', 'edit_distance', 'random']:
+        return semantic_config['training_set'] != 'empty'
+    if semantic_config['word_embedding'] in ['use', 'nnlm', 'bert']:
+        return semantic_config['training_set'] != 'standard'
+    if semantic_config['word_embedding'] not in ['jaccard', 'edit_distance', 'random']:
+        return semantic_config['training_set'] == 'empty'
+
+
 def first_round_migration():
+    if forbidden_config(sm_config):
+        return
     row_index = find_or_create()
     if results.iloc[row_index]['error'] != '':
         print_exist_message(row_index)
@@ -59,7 +70,7 @@ def get_results():
     try:
         return pd.read_csv(config.results)
     except FileNotFoundError:
-        columns = ["embedding", "train_set", "algorithm", "descriptor", 'src', 'target', 'error', 'test_exist']
+        columns = ["word_embedding", "training_set", "algorithm", "descriptors", 'src', 'target', 'error', 'test_exist']
         return pd.DataFrame(columns=columns)
 
 
@@ -71,12 +82,12 @@ if __name__ == '__main__':
     for embedding in config.embedding:
         for train_set in config.train_sets:
             for algorithm in config.algorithm:
-                for descriptor in config.descriptors:
+                for descriptors in config.descriptors:
                     for i, subjects in migration_subjects.iterrows():
-                        sm_config = {'embedding': embedding,
-                                     'train_set': train_set,
+                        sm_config = {'word_embedding': embedding,
+                                     'training_set': train_set,
                                      'algorithm': algorithm,
-                                     'descriptor': descriptor,
+                                     'descriptors': descriptors,
                                      'src': subjects['src'],
                                      'target': subjects['target'],
                                      'error': '',

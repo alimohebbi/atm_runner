@@ -36,7 +36,7 @@ def copy_subjects(migration):
 
 
 def add_config_file(migration):
-    file_path = config.work_dir + '/config.json'
+    file_path = config.work_dir + '/sm_config'
     col = list(migration.keys())
     col= list(set(col) - {'error', 'test_exist', 'src', 'target'} )
     conf = dict(migration[col])

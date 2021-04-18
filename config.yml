@@ -16,19 +16,19 @@ embedding:
 #  - jaccard
 #  - edit_distance
 train_set:
-  - android
-  - blogs
-  - standard
-  - empty
+#  - android
+#  - blogs
+#  - standard
+#  - empty
   - googleplay
 algorithm:
-  - craftdroid
+#  - craftdroid
   - custom
-  - atm_0
+#  - atm_0
 descriptors:
-  - union
-  - intersection
-  - craftdroid
+#  - union
+#  - intersection
+#  - craftdroid
   - atm
 clusters:
   app_to_cluster: "/Users/usiusi/Documents/Repositories/word-embedding/embedding/app_to_cluster.csv"

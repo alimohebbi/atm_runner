@@ -32,7 +32,7 @@ def check_log_error(migration):
     file = get_log_file_path(migration)
     with open(file, 'r') as file:
         data = file.read().replace('\n', '')
-    return True if ('error' in data) or ('Exception' in data) else False
+    return True if ('error' in data) or ('Exception' in data) or ('Error' in data) else False
 
 
 def is_generated_test_path(file_path):
@@ -43,13 +43,12 @@ def is_generated_test_path(file_path):
 
 def find_test_file(migration):
     target_path = config.work_dir + migration['target']
-    result = None
+    result = []
     for path, sub_dirs, files in os.walk(target_path):
         for name in files:
             file_path = pathlib.PurePath(path, name)
             if is_generated_test_path(file_path):
-                result = file_path
-                break
+                result.append(file_path)
     return result
 
 
@@ -58,15 +57,18 @@ def move_test_file(migration, test_file_path):
     full_dir = config.generated_dir + '/' + sub_dir
     dir_for_migration = full_dir + '/' + migration['src'] + '-' + migration['target']
     os.makedirs(dir_for_migration, exist_ok=True)
-    shutil.move(str(test_file_path), dir_for_migration)
+    file_name = ntpath.basename(test_file_path)
+    destination_path= dir_for_migration + '/' + file_name
+    shutil.move(str(test_file_path), destination_path)
 
 
 def post_migration(migration):
     err_exist = check_log_error(migration)
     test_file_path = find_test_file(migration)
     test_exist = False
-    if test_file_path:
-        move_test_file(migration, test_file_path)
+    if len(test_file_path) > 0 :
+        for f in test_file_path:
+            move_test_file(migration, f)
         test_exist = True
     clean_dir(migration)
     return err_exist, test_exist
