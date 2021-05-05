@@ -40,6 +40,7 @@ def add_config_file(migration):
     col = list(migration.keys())
     col= list(set(col) - {'error', 'test_exist', 'src', 'target'} )
     conf = dict(migration[col])
+    conf['app_pair'] = migration['src'] + '-' + migration['target']
     with open(file_path, 'w') as f:
         json.dump(conf, f)
 

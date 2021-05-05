@@ -10,14 +10,6 @@ def load_migrations():
     return pd.read_csv(config.migration_plan_path)
 
 
-# def redo_erroneous_migrated():
-#     global i, row
-#     for i, row in migration_df.iterrows():
-#         if row['error'] and not row['test_exist']:
-#             migration_process(migration_df, row)
-#         migration_df.to_csv(config.migration_plan_path, index=False)
-
-
 def find_or_create():
     global results
     condition = (results['word_embedding'] == sm_config['word_embedding']) & \
@@ -52,6 +44,15 @@ def first_round_migration():
     migration_process(results, row_index)
 
 
+def redo_failed_migaratoins():
+    if forbidden_config(sm_config):
+        return
+    row_index = find_or_create()
+    if bool(results.iloc[row_index]['error']) and not results.iloc[row_index]['test_exist']:
+        print('Redo the failed migration: ' + config_str(row_index))
+        migration_process(results, row_index)
+
+
 def print_exist_message(row_index):
     str_row = config_str(row_index)
     print("Already exist: " + str_row)
@@ -74,7 +75,6 @@ def get_results():
         return pd.DataFrame(columns=columns)
 
 
-
 if __name__ == '__main__':
     migration_subjects = load_migrations()
     results = get_results()
@@ -93,4 +93,5 @@ if __name__ == '__main__':
                                      'error': '',
                                      'test_exist': ''}
                         first_round_migration()
+                        redo_failed_migaratoins()
                         results.to_csv(config.results, index=False)

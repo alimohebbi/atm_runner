@@ -30,7 +30,7 @@ def run_atm(migration):
     for line in cp.stdout:
         logfile.write(line)
         sys.stdout.write(line)
-        if '(\'<\' (code 60))' in line:
+        if '(\'<\' (code 60))' in line or 'Source events are malformed' in line:
             cp.kill()
             break
     cp.wait()
