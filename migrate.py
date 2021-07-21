@@ -28,17 +28,28 @@ def kill(process):
 def run_atm(migration):
     cp = get_subprocess(migration)
     logfile = open(get_log_file_path(migration), 'w')
-    my_timer = Timer(config.migration_timeout, kill, [(cp, logfile)])
-    my_timer.start()
+    migration_timer = Timer(config.migration_timeout, kill, [(cp, logfile)])
+    migration_timer.start()
+    monitor_lines(cp, logfile)
+    cp.wait()
+    migration_timer.cancel()
+    logfile.close()
+
+
+def monitor_lines(cp, logfile):
+    install_timer = None
     for line in cp.stdout:
         logfile.write(line)
         sys.stdout.write(line)
+        if install_timer is not None:
+            install_timer.cancel()
+            install_timer = None
+        if 'Installing APK' in line:
+            install_timer = Timer(config.install_timeout, kill, [(cp, logfile)])
+            install_timer.start()
         if '(\'<\' (code 60))' in line or 'Source events are malformed' in line:
             cp.kill()
             break
-    cp.wait()
-    my_timer.cancel()
-    logfile.close()
 
 
 def get_subprocess(migration):

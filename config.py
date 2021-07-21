@@ -42,6 +42,10 @@ class Config(object):
         return self._get_property('migration_timeout')
 
     @property
+    def install_timeout(self):
+        return self._get_property('install_timeout')
+
+    @property
     def clean_file(self):
         return self._get_property('clean_file')
 
