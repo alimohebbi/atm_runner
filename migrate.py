@@ -18,18 +18,17 @@ def write_file(input_text, log_file):
 
 
 def kill(process):
-    message = 'Error: killed migration: ' + process[1]['src'] + ' to ' + process[1]['target']
+    message = 'Timeout Error: **** Migration is killed ****'
     print(message)
-    logfile = open(get_log_file_path(process[1]), 'w')
+    logfile = process[1]
     logfile.write(message)
-    logfile.close()
     os.killpg(os.getpgid(process[0].pid), signal.SIGKILL)
 
 
 def run_atm(migration):
     cp = get_subprocess(migration)
     logfile = open(get_log_file_path(migration), 'w')
-    my_timer = Timer(config.migration_timeout, kill, [(cp, migration)])
+    my_timer = Timer(config.migration_timeout, kill, [(cp, logfile)])
     my_timer.start()
     for line in cp.stdout:
         logfile.write(line)
@@ -39,6 +38,7 @@ def run_atm(migration):
             break
     cp.wait()
     my_timer.cancel()
+    logfile.close()
 
 
 def get_subprocess(migration):
