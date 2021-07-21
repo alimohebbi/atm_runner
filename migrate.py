@@ -1,3 +1,5 @@
+import os
+import signal
 import subprocess
 import sys
 from threading import Timer
@@ -9,7 +11,6 @@ from pre import prepare_for_migration
 config = Config()
 
 
-
 def write_file(input_text, log_file):
     f = open(log_file, "w")
     f.write(input_text)
@@ -17,9 +18,12 @@ def write_file(input_text, log_file):
 
 
 def kill(process):
-    process[0].kill()
-    print('killed')
-    print(process[1]['src'] + ' to ' + process[1]['target'])
+    os.killpg(os.getpgid(process[0].pid), signal.SIGKILL)
+    message = 'Error: killed migration: ' + process[1]['src'] + ' to ' + process[1]['target']
+    print(message)
+    logfile = open(get_log_file_path(process[1]), 'w')
+    logfile.write(message)
+    logfile.close()
 
 
 def run_atm(migration):
@@ -39,12 +43,12 @@ def run_atm(migration):
 
 def get_subprocess(migration):
     command = config.atm_root + '/run_AppTestMigrator.sh'
-    src_path = config.work_dir + '/' + migration['src']
-    target_path = config.work_dir + '/' + migration['target']
+    src_path = config.work_dir + migration['src']
+    target_path = config.work_dir + migration['target']
     cp = subprocess.Popen([command, src_path, target_path], universal_newlines=True,
                           stdout=subprocess.PIPE,
                           stderr=subprocess.STDOUT,
-                          cwd=config.atm_root)
+                          cwd=config.atm_root, preexec_fn=os.setsid)
     return cp
 
 
@@ -54,4 +58,4 @@ def migration_process(migration_df, i):
     run_atm(row)
     err_exist, test_exist = post_migration(row)
     migration_df.at[i, 'error'] = err_exist
-    migration_df.at[i, 'test_exist'] = str(test_exist)
+    migration_df.at[i, 'test_exist'] = test_exist
