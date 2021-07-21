@@ -18,12 +18,12 @@ def write_file(input_text, log_file):
 
 
 def kill(process):
-    os.killpg(os.getpgid(process[0].pid), signal.SIGKILL)
     message = 'Error: killed migration: ' + process[1]['src'] + ' to ' + process[1]['target']
     print(message)
     logfile = open(get_log_file_path(process[1]), 'w')
     logfile.write(message)
     logfile.close()
+    os.killpg(os.getpgid(process[0].pid), signal.SIGKILL)
 
 
 def run_atm(migration):
