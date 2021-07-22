@@ -1,6 +1,7 @@
 import shutil
 import subprocess
 import json
+from time import sleep
 
 from config import Config
 
@@ -19,6 +20,7 @@ def remove_subjects(migration):
     remove_dir(src_dir)
     target_dir = config.work_dir + migration['target']
     remove_dir(target_dir)
+    sleep(5)
 
 
 def clean_dir(migration):
@@ -31,8 +33,8 @@ def clean_dir(migration):
 def copy_subjects(migration):
     src_dir = config.work_dir + '/donor/' + migration['src']
     target_dir = config.work_dir + '/target/' + migration['target']
-    shutil.copytree(src_dir, config.work_dir + '/' + migration['src'])
-    shutil.copytree(target_dir, config.work_dir + '/' + migration['target'])
+    shutil.copytree(src_dir, config.work_dir + migration['src'])
+    shutil.copytree(target_dir, config.work_dir + migration['target'])
 
 
 def add_config_file(migration):
