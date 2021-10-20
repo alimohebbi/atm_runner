@@ -24,6 +24,14 @@ def find_or_create():
     results = results.append(sm_config, ignore_index=True)
     return results.index[[-1]].to_list()[0]
 
+def is_config_in_sample(semantic_config):
+    samples = pd.read_csv(config.config_samples)
+    return ((samples['word_embedding'] == semantic_config['word_embedding']) & (
+            samples['training_set'] == semantic_config['training_set']) &
+            (samples['algorithm'] == semantic_config['algorithm']) &
+            (samples['descriptors'] == semantic_config['descriptors'])
+            ).any()
+
 
 def forbidden_config(semantic_config):
     if semantic_config['word_embedding'] in ['jaccard', 'edit_distance', 'random']:
@@ -35,7 +43,7 @@ def forbidden_config(semantic_config):
 
 
 def first_round_migration():
-    if forbidden_config(sm_config):
+    if forbidden_config(sm_config) or not is_config_in_sample(sm_config):
         return
     row_index = find_or_create()
     if results.iloc[row_index]['error'] != '':
@@ -45,7 +53,7 @@ def first_round_migration():
 
 
 def redo_failed_migaratoins():
-    if forbidden_config(sm_config):
+    if forbidden_config(sm_config) or not is_config_in_sample(sm_config):
         return
     row_index = find_or_create()
     if bool(results.iloc[row_index]['error']) and not results.iloc[row_index]['test_exist']:

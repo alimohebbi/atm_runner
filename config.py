@@ -62,6 +62,10 @@ class Config(object):
         return self._get_property('atm_root')
 
     @property
+    def config_samples(self):
+        return self._get_property('config_samples')
+
+    @property
     def work_dir(self):
         return self._get_property('atm_root') + '/AppTestMigrator/'
 
