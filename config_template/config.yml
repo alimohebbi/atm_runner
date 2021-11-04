@@ -1,34 +1,36 @@
 migration_plan_path: "migrations.csv"
 results: "results.csv"
 clean_file: "clean.sh"
-atm_root: "/Users/usiusi/Documents/Repositories/AppTestMigrator/ATM-Modified"
+atm_root: "/root/test-reuse/atm/ATM-Modified"
 migration_log_dir: "log"
 generated_dir: "generated"
+config_samples: 'config_sample.csv'
 migration_timeout: 3600
+install_timeout: 240
 embedding:
   - wm
-#  - w2v
-#  - nnlm
-#  - use
-#  - bert
-#  - glove
-#  - fast
-#  - jaccard
-#  - edit_distance
+  - w2v
+  - nnlm
+  - use
+  - bert
+  - glove
+  - fast
+  - jaccard
+  - edit_distance
 train_set:
-#  - android
-#  - blogs
-#  - standard
-#  - empty
+  - android
+  - blogs
+  - standard
+  - empty
   - googleplay
 algorithm:
-#  - craftdroid
+  - craftdroid
   - custom
-#  - atm_0
+  - atm
 descriptors:
-#  - union
-#  - intersection
-#  - craftdroid
+  - union
+  - intersection
+  - craftdroid
   - atm
 clusters:
   app_to_cluster: "/Users/usiusi/Documents/Repositories/word-embedding/embedding/app_to_cluster.csv"

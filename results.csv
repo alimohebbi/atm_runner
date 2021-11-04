@@ -1,6 +1,0 @@
-word_embedding,training_set,algorithm,descriptors,src,target,error,test_exist
-wm,googleplay,custom,atm,NoteTaking2,NoteTaking4,True,False
-wm,googleplay,custom,atm,NoteTaking3,NoteTaking4,True,True
-wm,googleplay,custom,atm,ExpenseTracker2,ExpenseTracker4,True,True
-wm,googleplay,custom,atm,ExpenseTracker3,ExpenseTracker4,True,True
-wm,googleplay,custom,atm,NoteTaking4,NoteTaking3,True,True
