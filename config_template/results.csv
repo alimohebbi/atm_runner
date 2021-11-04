@@ -1,4 +1,1 @@
 word_embedding,training_set,algorithm,descriptors,src,target,error,test_exist
-wm,googleplay,custom,atm,NoteTaking2,NoteTaking3,False,False
-nnlm,standard,custom,union,NoteTaking2,NoteTaking3,False,False
-nnlm,standard,custom,atm,NoteTaking2,NoteTaking3,False,False
