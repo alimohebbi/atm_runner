@@ -5,4 +5,4 @@ __pycache__
 config.yml
 migrations.csv
 results.csv
-config_sample.csv
+/config_sample.csv
