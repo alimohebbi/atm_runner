@@ -54,6 +54,10 @@ class Config(object):
         return self._get_property('migration_log_dir')
 
     @property
+    def emulator(self):
+        return self._get_property('emulator')
+
+    @property
     def generated_dir(self):
         return self._get_property('generated_dir')
 

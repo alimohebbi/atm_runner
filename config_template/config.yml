@@ -5,6 +5,7 @@ atm_root: "/root/test-reuse/atm/ATM-Modified"
 migration_log_dir: "log"
 generated_dir: "generated"
 config_samples: 'config_sample.csv'
+emulator: "emulator1"
 migration_timeout: 3600
 install_timeout: 240
 embedding:
