@@ -4,6 +4,7 @@ import json
 from time import sleep
 
 from config import Config
+from emulator import start_emulator
 
 config = Config()
 
@@ -48,6 +49,7 @@ def add_config_file(migration):
 
 
 def prepare_for_migration(migration):
+    start_emulator()
     clean_dir(migration)
     copy_subjects(migration)
     add_config_file(migration)
