@@ -9,7 +9,9 @@ config = Config()
 start_command = ['emulator', '-ports', ' 5554,5555', '-avd', config.emulator, '-no-audio',
                  '-no-window',
                  '-no-snapshot-load',
-                 '-wipe-data'
+                 '-wipe-data',
+                 '-partition-size',
+                 '5120'
                  ]
 
 stop_command = [
@@ -25,7 +27,7 @@ def start_emulator():
                                         # cwd=work_dir,
                                         stderr=subprocess.STDOUT,
                                         preexec_fn=os.setsid)
-    sleep(30)
+    sleep(60)
     print('Emulator Started')
 
 

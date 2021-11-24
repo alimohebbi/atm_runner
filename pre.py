@@ -14,6 +14,12 @@ def remove_dir(path):
         shutil.rmtree(path)
     except FileNotFoundError as a:
         pass
+    except OSError as a:
+        try:
+            shutil.rmtree(path)
+        except FileNotFoundError as a:
+            pass
+
 
 
 def remove_subjects(migration):
