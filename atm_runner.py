@@ -59,7 +59,7 @@ def redo_failed_migaratoins():
     if forbidden_config(sm_config) or not is_config_in_sample(sm_config):
         return
     row_index = find_or_create()
-    if bool(results.iloc[row_index]['error']) and not results.iloc[row_index]['test_exist']:
+    if not results.iloc[row_index]['test_exist']:
         print('Redo the failed migration: ' + config_str(row_index))
         migration_process(results, row_index)
 
