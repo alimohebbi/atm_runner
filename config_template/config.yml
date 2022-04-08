@@ -29,6 +29,7 @@ algorithm:
   - custom
   - atm
   - perfect
+  - adaptdroid
 descriptors:
   - union
   - intersection
