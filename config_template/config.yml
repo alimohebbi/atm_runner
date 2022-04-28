@@ -18,6 +18,7 @@ embedding:
   - fast
   - jaccard
   - edit_distance
+  - random
 train_set:
   - android
   - blogs
@@ -30,6 +31,7 @@ algorithm:
   - atm
   - perfect
   - adaptdroid
+  - random
 descriptors:
   - union
   - intersection
